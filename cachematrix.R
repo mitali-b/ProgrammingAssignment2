@@ -1,37 +1,34 @@
-## Put comments here that give an overall description of what your
-## functions do
+## makeCacheMatrix lets cache inverse of a matrix. It first assigns Null to a variable, sets the matrix value, << caches the matrix and assigns value from a different environment
 
-## Write a short comment describing this function
 
 makeCacheMatrix <- function(x = matrix()) {
-	
-	m <- NULL
-  	set <- function(y){
-    x <<- y
+  
+  m <- NULL  #Assign Null to a variable
+  set <- function(y){
+    x <<- y # Assigns value of y from the other environment
     m <<- NULL
   }
   
-  get <- function() x
-  setinv <- function(inverse) m <<- inverse
-  getinv <- function() m
+  get <- function() x  # To get the cached matrix value
+  setinv <- function(inverse) m <<- inverse 
+  getinv <- function() m  #To get saved value of inverse matrix
   list(set = set, get = get,
        setinv = setinv,
        getinv = getinv)
+  
 }
 
-
-## Write a short comment describing this function
+## This function returns inverse of the matrix
 
 cacheSolve <- function(x, ...) {
-	m <- x$getinv()
-  	if(!is.null(m)){
-   		message("getting cached results")
-    	return(m)
-  	}
- 	 data <- x$get()
-  	m <- solve(data, ...)
- 	 x$setinv(m)
-  	m
-	
-        ## Return a matrix that is the inverse of 'x'     
+  ## Return a matrix that is the inverse of 'x'
+  m <- x$getinv()
+  if(!is.null(m)){  #Checks if inverse has already been calculated
+    message("getting cached results")
+    return(m)
+  }
+  data <- x$get()
+  m <- solve(data, ...) #calculates inverse
+  x$setinv(m) #Sets inverse value of the matrix in cache
+  m
 }
